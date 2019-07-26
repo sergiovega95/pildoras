@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    Layout = "~/Pages/_DevExtremeLayout.cshtml";
+    @using WebApplication1.Models
+}
+
+
+
+
+<h2 style="margin-top:50px">Enviar parametros al datasource de la grilla, evento onbefore send</h2>
+<div>
+
+
+    @(Html.DevExtreme().DataGrid<Predio>()
+        .ID("dataGrid")
+        .DataSource(m=>m.RemoteController().LoadUrl( Url.Page("Index","ListaMedidasCautelaresVehiculo")).OnBeforeSend("function(e,action){MandarParametros(e,action)}"))
+        .Columns(columns =>
+        {
+            columns.AddFor(m=>m.CodigoPredial).Caption("CodigoPredial");
+            columns.AddFor(m=>m.Avaluo).Caption("Avaluo");
+            columns.AddFor(m=>m.Estrato).Caption("Estrato");
+            columns.AddFor(m => m.Direccion).Caption("Dirección");
+        })
+    )
+       
+
+</div>
+
+<script>
+
+    function MandarParametros(action, e)
+    {
+        console.log(action);
+
+        if (action == "load")
+        {
+            e.data.codigoPredial = "0001";
+        }
+
+    }
+
+</script>
